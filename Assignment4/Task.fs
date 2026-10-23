@@ -63,7 +63,7 @@ let read population_file network_file =
         x.cities <- x.cities @ [ y ]
         y.cities <- y.cities @ [ x ])
 
-    cities |> Map.toList |> List.map snd
+    cities |> Map.toSeq |> Seq.map snd
 
 
 
@@ -78,4 +78,7 @@ let Task4 () =
     graph |> Graph.islands _.cities |> Seq.map (Seq.countBy _.population)
 
 [<Fact>]
-let Task5 () = ()
+let Task5 () =
+    Graph.shortest _.cities (Seq.item 111 graph) (Seq.item 333 graph)
+    |> Option.map _.Length
+    |> Option.iter (printf "%d")

@@ -1,9 +1,9 @@
 module Graph
 
-let islands<'T when 'T: comparison> (mapNext: 'T -> 'T list) =
+let islands<'T when 'T: comparison> (mapNext: 'T -> 'T seq) =
     let rec dfs visited point =
         mapNext point
-        |> List.fold
+        |> Seq.fold
             (fun visited point ->
                 match visited |> Set.add point with
                 | set when set.Count > visited.Count -> dfs set point
@@ -21,8 +21,19 @@ let islands<'T when 'T: comparison> (mapNext: 'T -> 'T list) =
     >> Set.ofSeq
 
 
-//let shortest<'T when 'T: comparison> (mapNext: 'T -> 'T list) (graph: 'T list) =
-//    let rec bfs visited queue path point =
-//        match visited |> Set.add point with
-//        | set when set.Count > visited.Count -> bfs set point
-//        | _ -> visited)
+let shortest<'T when 'T: comparison> (mapNext: 'T -> 'T list) start target =
+    let rec bfs visited queue =
+        match queue with
+        | path :: _ when path |> List.last = target -> Some path
+        | path :: rest ->
+            bfs
+                (visited |> Set.add (path |> List.last))
+                (rest
+                 @ (path
+                    |> List.last
+                    |> mapNext
+                    |> List.filter (fun x -> visited |> Set.contains x |> not)
+                    |> List.map (fun x -> path @ [ x ])))
+        | _ -> None
+
+    bfs Set.empty [ [ start ] ]
