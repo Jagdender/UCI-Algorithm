@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <None Include="AI_USE.md" />
 	  <Content Include="city_population.txt">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
@@ -20,6 +21,8 @@
   <ItemGroup>
     <Compile Include="Task.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
   <ItemGroup>
     <PackageReference Include="xunit.v3.mtp-v2" Version="4.0.2" />
